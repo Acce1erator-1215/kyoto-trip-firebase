@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Kyoto Journey 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@300;400;600;700;900&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      /* iOS Optimization */
+      body {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+      }
+
+      /* Hide scrollbar */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      
+      /* Vertical writing mode */
+      .writing-vertical {
+        writing-mode: vertical-rl;
+        text-orientation: upright;
+        letter-spacing: 0.1em;
+      }
+
+      /* Washi Paper Texture */
+      .bg-wafu-paper {
+        background-color: #FDFBF7;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+      }
+
+      /* Luxury Gold Leaf Text Effect */
+      .text-gold-leaf {
+        background: linear-gradient(135deg, #CFB06E 0%, #E6D5B8 25%, #BFA46F 50%, #E6D5B8 75%, #CFB06E 100%);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shimmer 8s linear infinite; /* Slowed down from 3s to 8s for elegance */
+      }
+      
+      /* Luxury Gold Gradient Background */
+      .bg-gold-leaf {
+        background: linear-gradient(135deg, #CFB06E 0%, #F2E6D0 30%, #9E8246 60%, #F2E6D0 85%, #CFB06E 100%);
+        background-size: 200% auto;
+        animation: shimmer 12s linear infinite; /* Slowed down from 5s to 12s */
+      }
+
+      @keyframes shimmer {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 200% 50%; }
+      }
+
+      /* Bouncy Click Animation */
+      .active-bounce:active {
+        transform: scale(0.95);
+        transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      /* Jump & Spin Animation - Slower, Smoother */
+      @keyframes jump-spin {
+        0% { transform: translateY(0) rotate(0deg) scale(1); }
+        30% { transform: translateY(-15px) rotate(10deg) scale(1.05); } /* Softer Jump Peak */
+        100% { transform: translateY(0) rotate(360deg) scale(1); } /* Smooth Spin & Land */
+      }
+      .animate-jump-spin {
+        animation: jump-spin 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* Natural Petal Fall Animation with Texture */
+      @keyframes sakura-fall {
+        0% {
+          opacity: 0;
+          top: -10%; /* Start further up */
+          transform: translateX(0) rotate3d(1, 0.5, 0, 0deg) scale(0.8);
+        }
+        10% {
+          opacity: 0.9;
+        }
+        100% {
+          opacity: 0;
+          top: 110vh; 
+          transform: translateX(var(--fall-x)) rotate3d(1, 1, 1, var(--fall-r)) scale(1);
+        }
+      }
+      .animate-sakura-fall {
+        position: fixed;
+        animation: sakura-fall linear forwards;
+        will-change: transform, top, opacity;
+        z-index: 9999;
+        pointer-events: none;
+        /* Particle Feel */
+        filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.1));
+      }
+
+      /* Stamp Drop Animation */
+      @keyframes stamp-drop {
+        0% { transform: scale(2) rotate(-15deg); opacity: 0; }
+        50% { transform: scale(0.9) rotate(-12deg); opacity: 1; }
+        70% { transform: scale(1.05) rotate(-12deg); }
+        100% { transform: scale(1) rotate(-12deg); }
+      }
+      .animate-stamp-drop {
+        animation: stamp-drop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      }
+
+      /* Pop Effect for Toggles */
+      @keyframes pop {
+        0% { transform: scale(1); }
+        40% { transform: scale(1.25); }
+        100% { transform: scale(1); }
+      }
+      .animate-pop {
+        animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      /* Grand Flight Animation (Flashy) */
+      @keyframes fly-grand {
+        0% { transform: translateX(0) translateY(0) rotate(0deg) scale(1); }
+        20% { transform: translateX(-20px) translateY(10px) rotate(-15deg) scale(0.9); } /* Pull back */
+        40% { transform: translateX(50px) translateY(-40px) rotate(15deg) scale(1.2); } /* Take off */
+        60% { transform: translateX(80px) translateY(-10px) rotate(180deg) scale(1.1); } /* Loop */
+        80% { transform: translateX(120px) translateY(0) rotate(360deg) scale(1); } /* Land loop */
+        100% { transform: translateX(0) translateY(0) rotate(360deg) scale(1); } /* Reset */
+      }
+      .animate-fly-grand {
+        animation: fly-grand 1.8s cubic-bezier(0.45, 0, 0.55, 1);
+      }
+
+      /* Simple Fly Animation (Default) */
+      @keyframes fly-across {
+        0% { transform: translateX(-10px) translateY(5px) rotate(-5deg); opacity: 0; }
+        20% { opacity: 1; }
+        100% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 1; }
+      }
+      .animate-fly {
+        animation: fly-across 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      }
+
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              serif: ['"Shippori Mincho"', '"Noto Serif JP"', 'serif'],
+              sans: ['"Noto Sans JP"', 'sans-serif'],
+            },
+            colors: {
+              wafu: {
+                bg: '#FDFBF7', 
+                paper: '#FFFFFF',
+                text: '#1A202C', 
+                indigo: '#183654', // Kachiiro (Main Blue)
+                darkIndigo: '#0B1E33', // Deep Blue
+                gold: '#BFA46F',
+                goldLight: '#E6D5B8',
+                border: '#E2E8F0',
+                iron: '#4A5568', 
+              }
+            },
+            backgroundImage: {
+              'seigaiha': "url(\"data:image/svg+xml,%3Csvg width='40' height='24' viewBox='0 0 20 12' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 12c0-5.523 4.477-10 10-10s10 4.477 10 10v-2c0-5.523-4.477-10-10-10S0 4.477 0 10v2z' fill='%23183654' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E\")",
+            },
+            boxShadow: {
+              'washi': '0 4px 20px -2px rgba(24, 54, 84, 0.08), 0 0 0 1px rgba(24, 54, 84, 0.03)',
+              'float': '0 20px 40px -5px rgba(24, 54, 84, 0.15)',
+              'luxury': '0 10px 30px -5px rgba(191, 164, 111, 0.3)',
+            },
+            animation: {
+              'fade-in-up': 'fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            keyframes: {
+              fadeInUp: {
+                '0%': { opacity: 0, transform: 'translateY(10px)' },
+                '100%': { opacity: 1, transform: 'translateY(0)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "firebase/": "https://aistudiocdn.com/firebase@^12.6.0/",
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.1",
+    "vite": "https://aistudiocdn.com/vite@^7.2.6"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-[#F5F2EB] text-wafu-text font-sans antialiased overflow-hidden selection:bg-wafu-indigo selection:text-white">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
